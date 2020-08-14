@@ -3,12 +3,18 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Items;
+use App\Item;
 use App\Brand;
 use App\Subcategory;
 
 class ItemController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+        //-> except('index')
+        //->only('show');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -16,7 +22,7 @@ class ItemController extends Controller
      */
     public function index()
     {
-        $items=Items::all();
+        $items=Item::all();
         // dd($items); 
         return view('backend.items.index',
         compact('items'));
@@ -61,7 +67,7 @@ class ItemController extends Controller
         $request->photo->move(public_path('backend/itemimg'),$imageName);
         $myfile='backend/itemimg/'.$imageName;
         // Data insert
-        $item=new Items;
+        $item=new Item;
         $item->codeno=$request->codeno;
         $item->name=$request->name;
         $item->photo=$myfile;
@@ -83,7 +89,7 @@ class ItemController extends Controller
      */
     public function show($id)
     {
-        $item=Items::find($id);
+        $item=Item::find($id);
         // dd($item)
          return view('backend.items.show',
          compact('item'));
@@ -99,7 +105,7 @@ class ItemController extends Controller
     {
         $brands=Brand::all();
         $subcategories=Subcategory::all();
-        $item=Items::find($id);
+        $item=Item::find($id);
           return view('backend.items.edit',compact('brands','subcategories','item'));
     }
 
@@ -128,12 +134,13 @@ class ItemController extends Controller
          if($request->hasFile('photo')){
          $imageName=time().'.'.$request->photo->extension();
         $request->photo->move(public_path('backend/itemimg'),$imageName);
+        unlink($request->oldphoto);
         $myfile='backend/itemimg/'.$imageName;
         }else{
             $myfile=$request->oldphoto;
         }
         //data update
-        $item=Items::find($id);
+        $item=Item::find($id);
         $item->codeno=$request->codeno;
         $item->name=$request->name;
         $item->photo=$myfile;
@@ -155,7 +162,7 @@ class ItemController extends Controller
      */
     public function destroy($id)
     {
-        $item=Items::find($id);
+        $item=Item::find($id);
         $item->delete();
         // redirect
         return redirect()->route('items.index');

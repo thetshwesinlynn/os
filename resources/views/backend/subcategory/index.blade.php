@@ -14,15 +14,22 @@
 		</thead>
 		<tbody>
 			<tr>
-				<td>1</td>
-				<td>001 <a href="{{route('subcategory.show',1)}}"><span class="badge badge-primary badge-pill">Detail</span></a></td>
+			@php $i=1; @endphp
+			@foreach($subcategory as $subcategory)
+				<td>{{$i++}}</td>
+				<td>{{$subcategory->name}} <a href="{{route('subcategory.show',$subcategory->id)}}"><span class="badge badge-primary badge-pill">Detail</span></a></td>
 				
 				
 				<td>
-					<a href="{{route('subcategory.edit',1)}}" class="btn btn-warning">Edit</a>
-					<a href="#" class="btn btn-danger">Delete</a>
+					<a href="{{route('subcategory.edit',$subcategory->id)}}" class="btn btn-warning">Edit</a>
+					<form method="post" action="{{route('subcategory.destroy',$subcategory->id)}}" onsubmit="return confirm('Are you sure?')" class="d-inline-block">
+							@csrf
+							@method('DELETE')
+							<input type="submit" name="btnsubmit" value="Delete" class="btn btn-danger">
+						</form>
 				</td>
 			</tr>
+			@endforeach
 		</tbody>
 	</table>
 </div>

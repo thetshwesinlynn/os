@@ -14,16 +14,22 @@
 		</thead>
 		<tbody>
 			<tr>
-				<td>1</td>
-				<td>001 <a href="{{route('brand.show',1)}}"><span class="badge badge-primary badge-pill">Detail</span></a></td>
+				@php $i=1;@endphp
+				@foreach($brand as $brand)
+				<td>{{$i++}}</td>
+				<td>{{$brand->name}} <a href="{{route('brand.show',$brand->id)}}"><span class="badge badge-primary badge-pill">Detail</span></a></td>
 				
-				<td>5500 MMK</td>
 				<td>
-					<a href="{{route('brand.edit',1)}}" class="btn btn-warning">Edit</a>
+					<a href="{{route('brand.edit',$brand->id)}}" class="btn btn-warning">Edit</a>
 					
-					<a href="#" class="btn btn-danger">Delete</a>
+					<form method="post" action="{{route('brand.destroy',$brand->id)}}" onsubmit="return confirm('Are you sure?')" class="d-inline-block">
+							@csrf
+							@method('DELETE')
+							<input type="submit" name="btnsubmit" value="Delete" class="btn btn-danger">
+						</form>
 				</td>
 			</tr>
+			@endforeach
 		</tbody>
 	</table>
 </div>

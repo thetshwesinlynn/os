@@ -13,10 +13,40 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/','BackendController@dashboard')->name('dashboard');
+Route::get('/','FrontendController@home')->name('homepage');
+
+Route::get('item','FrontendController@item')->name('item');
+
+Route::get('detail/{id}','FrontendController@detail')->name('detail');
+
+Route::get('register','FrontendController@register')->name('register');
+
+Route::get('login','FrontendController@login')->name('login');
+
+Route::get('checkout','FrontendController@checkout')->name('checkout');
+
+Route::get('profile','FrontendController@profile')->name('profile');
+
+
+//backend------------------------------------------------
+Route::middleware(['auth'])->group(function () {
+
+Route::resource('orders','OrderController');
+
+Route::get('dashboard','BackendController@dashboard')->name('dashboard');
+
 Route::resource('items','ItemController');//7(get-4/post-1/put-1/delete-1
+
 Route::resource('brand','BrandController');
 
 Route::resource('category','CategoryController');
 
 Route::resource('subcategory','SubcategoryController');
+});
+//end backend-------------------------------------------
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
+
+

@@ -7,6 +7,10 @@ use App\Brand;
 
 class BrandController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -14,7 +18,8 @@ class BrandController extends Controller
      */
     public function index()
     {
-        return view('backend.brand.index');
+        $brand=Brand::all();
+        return view('backend.brand.index',compact('brand'));
     }
 
     /**
@@ -24,6 +29,7 @@ class BrandController extends Controller
      */
     public function create()
     {
+
         return view('backend.brand.create');
     }
 
@@ -79,7 +85,8 @@ class BrandController extends Controller
      */
     public function edit($id)
     {
-       return view('backend.brand.edit');
+        $brand=Brand::find($id);
+       return view('backend.brand.edit',compact('brand'));
     }
 
     /**
@@ -91,7 +98,30 @@ class BrandController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            
+            'name'=>'required',
+            'photo'=>'sometimes'
+            
+        ]);
+        // If include file,upload
+        // file upload
+        if($request->hasFile('photo')){
+         $imageName=time().'.'.$request->photo->extension();
+        $request->photo->move(public_path('backend/brandimg'),$imageName);
+        $myfile='backend/brandimg/'.$imageName;
+        }else{
+            $myfile=$request->oldphoto;
+        }
+        //data update
+        $brand=Brand::find($id);
+        
+        $brand->name=$request->name;
+        $brand->photo=$myfile;
+        
+        $brand->save();
+        //redirect
+        return redirect()->route('brand.index');
     }
 
     /**
@@ -102,6 +132,9 @@ class BrandController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $brand=Brand::find($id);
+        $brand->delete();
+        // redirect
+        return redirect()->route('brand.index');
     }
 }

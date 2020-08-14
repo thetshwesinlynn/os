@@ -2,7 +2,7 @@
 @section('content')
 <div class="container-fluid">
 	<h2>Item Create (Form)</h2>
-	@if($errors->any())
+	{{-- @if($errors->any())
 	<div class="alert alert-danger">
 		<ul>
 			@foreach($errors->all() as $error)
@@ -10,20 +10,22 @@
 			@endforeach
 		</ul>
 	</div>
-	@endif
+	@endif --}}
 	<form action="{{route('items.store')}}" method="POST" enctype="multipart/form-data">
 		@csrf
 		<div class="form-group row">
 			<label for="codeno" class="col-sm-2 col-form-label">Codeno</label>
 			<div class="col-sm-10">
 				<input type="text" class="form-control" id="codeno" name="codeno">
-			</div>
+				<small class="text-danger">{{ $errors->first('codeno') }}</small>
+				</div>
 		</div>
 
 		<div class="form-group row">
 			<label for="name" class="col-sm-2 col-form-label">Name</label>
 			<div class="col-sm-10">
 				<input type="text" class="form-control" id="name" name="name">
+				<small class="text-danger">{{ $errors->first('name') }}</small>
 			</div>
 		</div>
 
@@ -31,6 +33,7 @@
 			<label for="price" class="col-sm-2 col-form-label">Price</label>
 			<div class="col-sm-10">
 				<input type="number" class="form-control" id="price" name="price">
+				<small class="text-danger">{{ $errors->first('price') }}</small>
 			</div>
 		</div>
 
@@ -38,6 +41,7 @@
 			<label for="discount" class="col-sm-2 col-form-label">Discount</label>
 			<div class="col-sm-10">
 				<input type="number" class="form-control" id="discount" name="discount">
+				<small class="text-danger">{{ $errors->first('discount') }}</small>
 			</div>
 		</div>
 
@@ -45,6 +49,7 @@
 			<label for="photo" class="col-sm-2 col-form-label">Photo</label>
 			<div class="col-sm-10">
 				<input type="file" class="form-control" id="photo" name="photo">
+				<small class="text-danger">{{ $errors->first('photo') }}</small>
 			</div>
 		</div>
 
@@ -52,6 +57,7 @@
 			<label for="description" class="col-sm-2 col-form-label">Description</label>
 			<div class="col-sm-10">
 				<input type="text" class="form-control" id="description" name="description">
+				<small class="text-danger">{{ $errors->first('description') }}</small>
 			</div>
 		</div>
 

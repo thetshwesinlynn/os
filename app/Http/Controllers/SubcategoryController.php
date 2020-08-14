@@ -8,6 +8,10 @@ use App\Category;
 
 class SubcategoryController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -15,7 +19,8 @@ class SubcategoryController extends Controller
      */
     public function index()
     {
-         return view('backend.subcategory.index');
+         $subcategory=Subcategory::all();
+         return view('backend.subcategory.index',compact('subcategory'));
      }
 
     /**
@@ -79,7 +84,9 @@ class SubcategoryController extends Controller
      */
     public function edit($id)
     {
-       return view('backend.subcategory.edit');
+        $category=Category::all();
+        $subcategory=Subcategory::find($id);
+       return view('backend.subcategory.edit',compact('category','subcategory'));
     }
 
     /**
@@ -91,7 +98,24 @@ class SubcategoryController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+         $request->validate([
+            
+            'name'=>'required',
+            'category'=>'required'
+            
+        ]);
+        // If include file,upload
+        // file upload
+       
+        //data update
+        $subcategory=Subcategory::find($id);
+        
+        $subcategory->name=$request->name;
+        $subcategory->category_id=$request->category;
+        
+        $subcategory->save();
+        //redirect
+        return redirect()->route('subcategory.index');
     }
 
     /**
@@ -102,6 +126,9 @@ class SubcategoryController extends Controller
      */
     public function destroy($id)
     {
-        //
+     $subcategory=Subcategory::find($id);
+        $subcategory->delete();
+        // redirect
+        return redirect()->route('subcategory.index');  
     }
 }
