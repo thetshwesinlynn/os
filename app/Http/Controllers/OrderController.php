@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Order;
+use App\User;
 use Illuminate\Support\Facades\Auth;
 
 
@@ -17,7 +18,8 @@ class OrderController extends Controller
      */
     public function index()
     {
-        //
+        $order=Order::all();
+        return view('backend.order.index',compact('order'));
     }
 
     /**
@@ -50,7 +52,7 @@ class OrderController extends Controller
         $order->orderdate=date('Y-m-d');
         $order->user_id=Auth::id();//author id
         $order->note=$request->notes;
-        $order->total=5000;
+        $order->total=$total;
         $order->save();//only saved into order table
 
         //sava into order_detail
