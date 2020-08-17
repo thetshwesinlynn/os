@@ -216,7 +216,7 @@ $(document).ready(function(){
 		var shopString=localStorage.getItem("heinshop");
 			if (shopString) {
 				// var shopArray=JSON.parse(shopString);
-				$.post('/orders',{shop_data:shopString,notes:notes},function(response){
+				$.post('/order',{shop_data:shopString,notes:notes},function(response){
 					console.log(response);
 					if (response) {
 						alert(response);
