@@ -10,9 +10,9 @@ use Illuminate\Support\Facades\Auth;
 
 class OrderController extends Controller
 {
-    public function__construct($value=''){
+    public function __construct($value='') {
         $this->middleware('role:admin')->except('store');
-         $this->middleware('role:customer')->only('store');
+        $this->middleware('role:customer')->only('store');
     }
     /**
      * Display a listing of the resource.
